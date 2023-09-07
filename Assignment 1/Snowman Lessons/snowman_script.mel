@@ -1,0 +1,19 @@
+//this is a comment!
+
+/*this is also
+a comment*/
+
+//create base sphere
+polySphere -radius 3 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 3 0;
+
+//create middle sphere
+polySphere -radius 1 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+//-e is implicit, "edit"    -q is "query", asks
+polySphere -e -radius 2;
+print(`polySphere -q -subdivisionsY`); //back ticks, tilde key above Tab!
+move -relative -objectSpace -worldSpaceDistance 0 7 0;
+
+//create head sphere
+polySphere -radius 1 -subdivisionsX 20 -subdivisionsY 20 -axis 0 1 0 -createUVs 2 -constructionHistory 1;
+move -relative -objectSpace -worldSpaceDistance 0 9.5 0;

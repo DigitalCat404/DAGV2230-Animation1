@@ -1,0 +1,43 @@
+//make body
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name body;
+polyCube -e -width 3 -height 3 -depth 2;
+move -relative -objectSpace -worldSpaceDistance 0 3 0;
+
+//make left leg
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name leftLeg;
+polyCube -e -height 2;
+move -relative -objectSpace -worldSpaceDistance 2 1.5 0;
+
+//make left foot
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name leftFoot;
+polyCube -e -height .5 -depth 3;
+move -relative -objectSpace -worldSpaceDistance 2 .25 0;
+
+//make right leg
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name rightLeg;
+polyCube -e -height 2;
+move -relative -objectSpace -worldSpaceDistance -2 1.5 0;
+
+//make right  foot
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name rightFoot;
+polyCube -e -height .5 -depth 3;
+move -relative -objectSpace -worldSpaceDistance -2 .25 0;
+
+//make neck
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name neck;
+//polyCube -e -height 2;
+move -relative -objectSpace -worldSpaceDistance 0 5 0;
+
+//make head
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name head;
+polyCube -e -width 2 -depth 2;
+move -relative -objectSpace -worldSpaceDistance 0 6 0;
+
+//make eyes
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name leftEye;
+polyCube -e -width .5 -height .5 -depth .5;
+move -relative -objectSpace -worldSpaceDistance 0.6 6 1;
+
+polyCube -subdivisionsX 3 -subdivisionsY 3 -subdivisionsZ 3 -axis 0 1 0 -createUVs 2 -constructionHistory 1 -name leftEye;
+polyCube -e -width .5 -height .5 -depth .5;
+move -relative -objectSpace -worldSpaceDistance -0.6 6 1;
