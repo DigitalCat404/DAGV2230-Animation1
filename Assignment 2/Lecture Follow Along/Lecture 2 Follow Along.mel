@@ -1,0 +1,18 @@
+//example variables
+
+int $number;
+$number = 27;
+
+string $name;
+$name = "Josh";
+
+float $position[] = {8.1, -1.8, 3.0}; //creates an array of floats
+print($position); //will list all in the array!
+
+/*
+    int - integers
+    float - decimal numbers
+    string - text, "word"
+    boolean - true/false
+    array - container of one type, [1,2]
+*/

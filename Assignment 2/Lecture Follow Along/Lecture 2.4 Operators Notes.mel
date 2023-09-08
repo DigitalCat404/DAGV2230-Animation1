@@ -1,0 +1,46 @@
+/* Operators
+
++ : addition
+- : subtraction
+* : multiplication
+/ : division
+++ : increment by 1
+-- : decrement by 1
+
+% : modulus, gives remainder of division
+        ex. 13 % 5 = 3
+
+^ : to the power of
+
+*/
+
+/* Assignments
+
+= : assignment (from right to left)
++= : add value to variable and reassign
+-= : subtract value to variable and reassign
+*= : multiply value to variable and reassign
+/= : divide value to variable and reassign
+
+etc, works for all Operators!
+
+*/
+
+/* Comparisons
+
+0 is false, all else is true
+
+== : true if equal to one another
+!= : true if NOT equal to one another
+> : true if left is greater than right (>=)
+< : true if left is less than right (<=)
+
+*/
+
+/* Logical
+
+&& : AND; only if both are true, returns true
+|| : OR; if either are true, returns true
+! : NOT; reverses true/false
+
+*/

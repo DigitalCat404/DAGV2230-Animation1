@@ -1,0 +1,69 @@
+Let's find that algorithm!
+
+The original math-
+r				if r = 5, then first is 0
+(r*2) + (r-1)
+(r*2) + (r-1)*2 + (r-2)		
+
+SECOND
+2r + r - 1
+3r - 1				if r = 5, then second is 9
+
+THIRD
+2r + 2r -2 + r - 2
+4r - 4 + r
+5r - 4				if r = 5, then third is 16
+					WAIT, THAT'S A SQUARE!
+FOURTH
+???
+
+___________________
+
+using i for iterations...
+
+test 		(i^2-1)r - (i+1)
+insert 2: 	(2^2-1)r - (2+1)
+		3r - 3		X	that can't be right!
+
+test 		(i^2-1)r - (2i-3)
+insert 2:	(2^2-1)r - (2*2-3)
+		3r - 1		Y
+
+insert 3:	(i^2-1)r - (2i-3)
+		(3^2-1)r - (3*3-3)
+		8r - 6		X	not right either!
+
+
+test		what if factorial?
+		i!*r
+insert 2:	2r		X	nope, that can't be it
+
+_________________
+
+Oh! There's always a 2r, perhaps I'm overthinking this.
+
+simplify	2r + i(r-1) + r - (i-1)
+		2r + ir - i + r -i + 1
+		3r + ir -2i + 1
+
+test		3r + ir -2i + 1
+insert 2:	3r + 2r -2*2 + 1
+		3r + 2r - 3
+		5r - 3		X	Well that theory's bust
+
+_______________
+what if something is being exponentially boosted?
+
+test		(i+1)^2 + r
+insert 2:	(2+1)^2 + r
+		9 + r		Y
+
+insert 3:	(3+1)^2 + r
+		16 + r		Y	FOUND YOU!
+
+still wrong though :/
+Let's just record the height position of the last sphere
+
+(r-j+1)*2+(r-j)
+2r - 2j + 2 + r - j
+3r - 3j + 2

@@ -1,0 +1,11 @@
+string $object[];
+
+$object = `polySphere -r 1 -sx 20 -sy 20 -ax 0 1 0 -cuv 2 -ch 1`;
+//0 = pSphere, 1 = polySphere
+
+move -relative 1, 5, -6 $object[0];
+
+float $radius = `polySphere -q -radius $object[0]`; //ask for radius of the sphere
+print($radius);
+
+polySphere -e -radius ($radius - 0.5); //reduce radius by 0.5
