@@ -1,0 +1,60 @@
+/* Asking GPT about how to make a spiral staircase */
+
+// Set your parameters
+int $numSteps = 20;  // Number of steps
+float $radius = 2.0; // Radius of the staircase
+float $height = 0.2; // Height of each step
+float $rotation = 360.0 / numSteps; // Rotation angle for each step
+
+// Create a helix curve
+string $helixCurve = `polyHelix -r $radius -h $numSteps * $height -s 1 -ch 1`;
+
+// Create a group to contain the staircase
+string $staircaseGroup = `group -em -n "spiralStaircase"`;
+
+// Loop to create the steps
+for ($step = 0; $step < $numSteps; $step++) {
+    // Duplicate a cube for each step
+    string $stepCube = `polyCube -w $radius * 2 -h $height -d $radius * 2 -sx 1 -sy 1 -sz 1 -ch 1`;
+    
+    // Position and rotate the step
+    float $rotateAngle = $rotation * $step;
+    float $position = $height * $step;
+    
+    // Move the step to the helix curve
+    float $positionOnCurve[] = pointOnCurve($helixCurve, ($position / ($numSteps * $height)));
+    move $positionOnCurve[0] $positionOnCurve[1] $positionOnCurve[2] $stepCube;
+    
+    // Rotate the step
+    rotate -r $rotateAngle 0 0 $stepCube;
+    
+    // Parent the step to the staircase group
+    parent $stepCube $staircaseGroup;
+}
+
+// Cleanup: delete the helix curve
+delete $helixCurve;
+
+// Select the staircase group
+select $staircaseGroup;
+
+
+/* Asking GPT about how to rotate around a pivot point */
+
+// Select the object you want to rotate
+string $object = "yourObjectName"; // Replace with the name of your object
+select $object;
+
+// Set the pivot point to the desired location (in world coordinates)
+float $pivotX = 1.0; // Replace with your desired X coordinate
+float $pivotY = 2.0; // Replace with your desired Y coordinate
+float $pivotZ = 3.0; // Replace with your desired Z coordinate
+
+// Set the pivot point
+xform -ws -piv ($pivotX) ($pivotY) ($pivotZ) $object;
+
+// Define the rotation angle in degrees
+float $rotationAngle = 45.0; // Replace with your desired angle
+
+// Perform the rotation around the pivot point
+rotate -r -os 0 0 $rotationAngle $object;

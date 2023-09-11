@@ -1,0 +1,42 @@
+proc GenerateStaircase(int $count, float $length, float $width, float $height, float $pivotOffset, float $stepHeight, int $stepRotation)
+{
+    //cleanse some bad inputs
+    if($count < 0){
+        $count *= -1;
+    }
+    if($length < 0){
+        $length *= -1;
+    }
+    if($width < 0){
+        $width *= -1;
+    }
+    if($pivotOffset < 0){
+        $pivotOffset *= -1;
+    }
+
+    // Set the pivot point to the desired location (in world coordinates)
+    float $pivotX = 0;
+    float $pivotY = 0;
+    float $pivotZ = 0;
+
+    // Loop to create the steps
+    for ($step = 0; $step < $count; $step++) {
+        // Duplicate a cube for each step
+        string $stepCube[] = `polyCube -w $length -h $height -depth $width -sx 1 -sy 1 -sz 1 -ch 1 -cuv 2 -name "step1"`;
+            
+        select $stepCube[0];
+        move -wd -moveX $pivotOffset -moveY ($stepHeight*$step);
+        
+        // Set the pivot point
+        xform -ws -piv ($pivotX) ($pivotY) ($pivotZ) $stepCube;
+
+        // Perform the rotation around the pivot point
+        rotate -r -os 0 ($stepRotation*$step) 0 $stepCube;
+    }
+
+    //create pole to center around
+    string $stepPole[] = `polyCylinder -r ($pivotOffset-$length*0.5) -height ($count*$stepHeight) -sa 20 -sh $count -cuv 2 -name "centerPole"`;
+    select $stepPole[0];
+    move -moveY ($count * $stepHeight * 0.5);
+}
+
