@@ -1,0 +1,30 @@
+float $radius = 7;
+int $sphereCount = 4;     //removed due to algorithm solving issues
+float $reductionAmount = 2.0; //how much each sphere shrinks by
+int $subdivisionCount = 20;
+float $distProportion = .7;     //tugs spheres downwards proportional to their world height
+
+string $defaultName = "orb";
+
+float $sphereHeights[];
+
+if($sphereCount < 1){
+    $sphereCount = 1;
+}
+
+$sphereHeights[0] = $radius;
+
+float $lastPosition = $radius*2;
+float $processRadius = $radius - $reductionAmount;
+
+for($j = 1; $j < $sphereCount; $j++){
+    $sphereHeights[$j] = ($lastPosition+$processRadius)*$distProportion;
+    $lastPosition += $processRadius*2;
+    $processRadius -= $reductionAmount;
+}
+
+
+for($i = 0; $i < $sphereCount; $i++){
+    polySphere -r ($radius-$reductionAmount*$i) -sx $subdivisionCount -sy $subdivisionCount -ax 0 1 0 -cuv 2 -ch 1 -name $defaultName;
+    move -r -os -wd 0 $sphereHeights[$i] 0;
+}
