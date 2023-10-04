@@ -1,0 +1,152 @@
+/* Joshua Ley
+DAGV-2440-320, Scripting For Animation 1
+10/2/2023
+*/
+
+global proc int Addition(int $input[]){
+    int $output = 0;
+    string $outString = "";
+
+    for($i = 0; $i < size($input); $i++){
+        $output += $input[$i];
+    }
+
+    $outString = intArrayToString($input," + ") + " = " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+global proc int Subtraction(int $input[]){
+    int $output = 0;
+    string $outString = "";
+
+    for($i = 0; $i < size($input); $i++){
+        $output -= $input[$i];
+    }
+
+    $outString = intArrayToString($input," - ") + " = " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+global proc int Multiplication(int $input[]){
+    int $output = $input[0];
+    string $outString = $input[0] + " x ";
+
+    for($i = 1; $i < size($input); $i++){
+        $output *= $input[$i];
+    }
+
+    $outString = intArrayToString($input," x ") + " = " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+global proc float Division(int $input[]){
+    float $output = $input[0];
+    string $outString = $input[0] + " / ";
+
+    for($i = 1; $i < size($input); $i++){
+        $output /= $input[$i];
+    }
+
+    $outString = intArrayToString($input," / ") + " = " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+global proc float Power(int $input[]){
+    int $output = 0;
+
+    $output = pow($input[0],$input[1]);
+
+    if(size($input) > 2){
+        print("Ignoring inputs after the first two. ");
+    }
+
+    print($input[0] +"^"+ $input[1] +" = "+ $output + "\n");
+
+    return $output;
+}
+
+
+global proc float Mean(int $input[]){
+    float $output = 0;
+    string $outString = "The mean of {";
+
+    for($i = 0; $i < size($input); $i++){
+        $output += $input[$i];
+    }
+
+    $output /= size($input);
+
+    $outString = intArrayToString($input,", ") + "} is " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+global proc float Median(int $input[]){
+    float $output = 0;
+    string $outString = "The median of {";
+
+    int $isEven = size($input) % 2;
+    int $mid = size($input) / 2;    //we can abuse .mel auto-truncating
+
+    if($isEven == 0){
+        $output = float($input[$mid-1] + $input[($mid)]) / 2;
+    } else {
+        $output = $input[$mid];
+    }
+
+    $outString += intArrayToString($input,", ") + "} is " + $output + "\n";
+
+    print($outString);
+
+    return $output;
+}
+
+
+proc float Calculator(int $operation,int $input[]){
+    switch ($operation){
+        case 1:
+            return Addition($input);
+        break;
+        case 2:
+            return Subtraction($input);
+        break;
+        case 3:
+            return Multiplication($input);
+        break;
+        case 4:
+            return Division($input);
+        break;
+        case 5:
+            return Power($input);
+        break;
+        case 6:
+            return Mean($input);
+        break;
+        case 7:
+            return Median($input);
+        break;
+        default:
+            print("Error");
+            return 0;
+        break;
+    }
+}
