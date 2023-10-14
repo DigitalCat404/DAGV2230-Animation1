@@ -1,0 +1,85 @@
+global proc FetchValues(){
+    string $dupeField = `optionVar -q "dupeCountField"`;
+    int $numCount = `intField -q -value $dupeField`;
+
+    string $minXField = `optionVar -q "minXField"`;
+    float $minX = `floatField -q -value $minXField`;
+
+    string $maxXField = `optionVar -q "maxXField"`;
+    float $maxX = `floatField -q -value $maxXField`;
+
+    string $minYField = `optionVar -q "minYField"`;
+    float $minY = `floatField -q -value $minYField`;
+
+    string $maxYField = `optionVar -q "maxYField"`;
+    float $maxY = `floatField -q -value $maxYField`;
+
+    string $minZField = `optionVar -q "minZField"`;
+    float $minZ = `floatField -q -value $minZField`;
+
+    string $maxZField = `optionVar -q "maxZField"`;
+    float $maxZ = `floatField -q -value $maxZField`;
+
+    RandomPlacement($numCount,$minX,$maxX,$minY,$maxY,$minZ,$maxZ);
+}
+
+
+global proc RandomPlacement(int $numCount, float $minX, float $maxX, float $minY, float $maxY, float $minZ, float $maxZ){
+    float $newX;
+    float $newY;
+    float $newZ;
+    string $duplicate = "";
+
+    string $selectedObjects[] = `ls -selection`;
+
+    for($obj in $selectedObjects){
+
+        for($i = 0; $i < $numCount; $i++){
+            $newX = rand($minX, $maxX);
+            $newY = rand($minY, $maxY);
+            $newZ = rand($minZ, $maxZ);
+
+            string $duplicate[0] = `duplicate $obj`;
+            setAttr ($duplicate[0] + ".translateX") $newX;
+            setAttr ($duplicate[0] + ".translateY") $newY;
+            setAttr ($duplicate[0] + ".translateZ") $newZ;
+        }
+    }
+}
+
+
+string $randWindow = "Random Placement Generator";
+if(`window -exists $randWindow`){
+    deleteUI $randWindow;
+}
+
+    $randWindow = `window
+                    -title "Random Placement Generator"
+                    -sizeable 1
+                    $randWindow`; //initial parent, spawns invisible
+    string $mColumn = `columnLayout`; //I'm the parent now!
+        textField -text "Number of Duplicates" -editable 0 -width 125;
+        optionVar -stringValue "dupeCountField" `intField -step 1 -minValue 1 -value 1 -width 125`;
+        textField -editable 0 -width 1;
+        
+        rowLayout -numberOfColumns 6;
+            textField -text "Min X" -editable 0 -width 60;
+            textField -text "Max X" -editable 0 -width 60;
+            textField -text "Min Y" -editable 0 -width 60;
+            textField -text "Max Y" -editable 0 -width 60;
+            textField -text "Min Z" -editable 0 -width 60;
+            textField -text "Max Z" -editable 0 -width 60;
+
+        string $secondRow = `rowLayout -parent $mColumn -numberOfColumns 6`;
+            optionVar -stringValue "minXField" `floatField -precision 3 -step 0.1`;
+            optionVar -stringValue "maxXField" `floatField -precision 3 -step 0.1`;
+            optionVar -stringValue "minYField" `floatField -precision 3 -step 0.1`;
+            optionVar -stringValue "maxYField" `floatField -precision 3 -step 0.1`;
+            optionVar -stringValue "minZField" `floatField -precision 3 -step 0.1`;
+            optionVar -stringValue "maxZField" `floatField -precision 3 -step 0.1`;
+
+        textField -parent $mColumn -editable 0 -width 1;
+        button -parent $mColumn -label "Generate" -command "FetchValues()";
+        
+
+showWindow $randWindow;
