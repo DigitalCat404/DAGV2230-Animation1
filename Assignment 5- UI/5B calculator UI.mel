@@ -1,0 +1,275 @@
+/* Joshua Ley
+    Scripting For Animation 1
+    10/13/2023
+*/
+
+global string $selected = "NAV";
+
+global proc float Addition(float $input[]){
+    int $output = 0;
+    string $outString = "";
+
+    for($i = 0; $i < size($input); $i++){
+        $output += $input[$i];
+    }
+
+    $outString = floatArrayToString($input," + ") + " = " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Subtraction(float $input[]){
+    int $output = $input[0];
+    string $outString = "";
+
+    for($i = 1; $i < size($input); $i++){
+        $output -= $input[$i];
+    }
+
+    $outString = floatArrayToString($input," - ") + " = " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Multiplication(float $input[]){
+    int $output = $input[0];
+    string $outString = $input[0] + " x ";
+
+    for($i = 1; $i < size($input); $i++){
+        $output *= $input[$i];
+    }
+
+    $outString = floatArrayToString($input," x ") + " = " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Division(float $input[]){
+    float $output = $input[0];
+    string $outString = $input[0] + " / ";
+
+    for($i = 1; $i < size($input); $i++){
+        $output /= $input[$i];
+    }
+
+    $outString = floatArrayToString($input," / ") + " = " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Power(float $input[]){
+    int $output = $input[0];
+
+    for($i = 1; $i < size($input); $i++){
+        $output = pow($output,$input[$i]);
+    }
+
+
+    $outString = floatArrayToString($input,"^") + " = " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Mean(float $input[]){
+    float $output = 0;
+    string $outString = "The mean of {";
+
+    for($i = 0; $i < size($input); $i++){
+        $output += $input[$i];
+    }
+
+    $output /= size($input);
+
+    $outString += floatArrayToString($input,", ") + "} is " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc float Median(float $input[]){
+    float $output = 0;
+    string $outString = "The median of {";
+
+    int $isEven = size($input) % 2;
+    int $mid = size($input) / 2;    //we can abuse .mel auto-truncating
+
+    if($isEven == 0){
+        $output = float($input[$mid-1] + $input[($mid)]) / 2;
+    } else {
+        $output = $input[$mid];
+    }
+
+    $outString += floatArrayToString($input,", ") + "} is " + $output + "\n";
+
+    print($outString);
+
+    GiveEquation($outString);
+
+    return $output;
+}
+
+
+global proc RadioButtonActivate(string $choice){
+    global string $selected;
+
+    $selected = $choice;
+
+    $mathButton = `optionVar -q "mathButton"`;
+    if(!`button -q -enable $mathButton`){
+        button -e -enable 1 $mathButton;
+    }
+}
+
+
+global proc GiveEquation(string $equation){
+    $equationField = `optionVar -q "equation"`;
+    if(`textField -q -isObscured $equationField`){
+        textField -e -visible 1 $equationField;
+    }
+    textField -e -text $equation $equationField;
+}
+
+
+global proc ChangeOutput(float $result){
+    $outputField = `optionVar -q "output"`;
+
+    if(`floatField -q -isObscured $outputField`){
+        floatField -e -visible 1 $outputField;
+    }
+
+    floatField -e -value $result $outputField;
+}
+
+
+global proc DoMath(){
+    global string $selected;
+    float $input[];
+
+    string $operation = $selected;
+
+    $inputField = `optionVar -q "inputField"`;
+    string $inputString = `textField -q -text $inputField`;
+
+    if($inputString == ""){
+        $operation = "Empty";
+    }
+
+    string $inputArray[];
+    tokenize($inputString, " ", $inputArray);
+    float $number;
+
+    for($inArray in $inputArray){
+        $input[size($input)] = float($inArray);
+    }
+
+    $opsField = `optionVar -q "selectedOperation"`;
+    if(`textField -q -isObscured $opsField`){
+        textField -e -visible 1 $opsField;
+    }
+    textField -e -text $operation $opsField;
+
+    print($operation +"\n");
+
+    switch ($operation){
+        case "Add":
+            ChangeOutput(Addition($input));
+        break;
+        case "Subtract":
+            ChangeOutput(Subtraction($input));
+        break;
+        case "Multiply":
+            ChangeOutput(Multiplication($input));
+        break;
+        case "Divide":
+            ChangeOutput(Division($input));
+        break;
+        case "Power":
+            ChangeOutput(Power($input));
+        break;
+        case "Mean":
+            ChangeOutput(Mean($input));
+        break;
+        case "Median":
+            ChangeOutput(Median($input));
+        break;
+        case "Empty":
+            GiveEquation("Empty, no input");
+            ChangeOutput(0);
+        break;
+        default:
+            print("Error");
+            GiveEquation("Error");
+            ChangeOutput(0);
+        break;
+    }
+}
+
+
+proc Calculator(){
+    string $calcWindow = "Calculator";
+    if(`window -exists $calcWindow`){
+        deleteUI $calcWindow;
+    }
+
+    string $choices[] = {"Add", "Subtract", "Multiply", "Divide", "Power", "Mean", "Median"};
+
+        $calcWindow = `window
+                        -title "Calculator"
+                        -resizeToFitChildren 1
+                        -height 175
+                        $calcWindow`; //initial parent, spawns invisible
+        string $mColumn = `columnLayout -adjustableColumn true`; //I'm the parent now!           
+            
+            textField -text "Operation type:" -editable 0 -width 100;
+
+            rowLayout -numberOfColumns 7;
+                radioCollection "Operation";
+
+                for ($i = 0; $i < 7; $i++) {
+                    radioButton -label $choices[$i] -onCommand ("RadioButtonActivate(\""+$choices[$i]+"\")");
+                }
+
+            textField -parent $mColumn -text "Input (separate numbers by spaces)" -editable 0 -width 100;
+            optionVar -stringValue "inputField" `textField -parent $mColumn -width 150`;
+
+            optionVar -stringValue "mathButton" `button -parent $mColumn -label "Calculate" -command "DoMath()" -enable 0`;
+
+            optionVar -stringValue "selectedOperation" `textField -parent $mColumn -editable 0 -vis 0`;
+            optionVar -stringValue "equation" `textField -parent $mColumn -editable 0 -vis 0`;
+            optionVar -stringValue "output" `floatField -parent $mColumn -editable 0 -precision 4 -vis 0`;
+            
+    showWindow $calcWindow;
+}
+
+
+//Example:
+Calculator();

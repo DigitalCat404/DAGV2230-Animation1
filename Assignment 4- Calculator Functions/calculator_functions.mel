@@ -20,10 +20,10 @@ global proc int Addition(int $input[]){
 
 
 global proc int Subtraction(int $input[]){
-    int $output = 0;
+    int $output = $input[0];
     string $outString = "";
 
-    for($i = 0; $i < size($input); $i++){
+    for($i = 1; $i < size($input); $i++){
         $output -= $input[$i];
     }
 
@@ -92,7 +92,7 @@ global proc float Mean(int $input[]){
 
     $output /= size($input);
 
-    $outString = intArrayToString($input,", ") + "} is " + $output + "\n";
+    $outString += intArrayToString($input,", ") + "} is " + $output + "\n";
 
     print($outString);
 
